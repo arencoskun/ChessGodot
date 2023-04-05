@@ -2,6 +2,7 @@ extends Node2D
 
 const scaled_size = GlobalOptions.square_sprite_size * GlobalOptions.square_scaling.x
 var board: Array[Square]
+var boardScenes: Array[Node2D]
 
 const starting_board_file = "res://res/starting_board.txt"
 
@@ -16,23 +17,23 @@ func loadStartingBoard():
 	
 	for i in range(startingBoard.size()):
 		if startingBoard[i].contains(";"):
-			print("HELLO!!!!")
 			var type = startingBoard[i].split(";")[0]
 			var color = startingBoard[i].split(";")[1]
 			
-			getOnBoard(boardIndexToVector(i)).add_piece(Pawn.new(true if color == "1" else false))
+			getOnBoard(boardIndexToVector(i)).add_piece(PieceID.PIECE_CLASSES[int(type)].new(true if color == "1" else false))
 	
 	file = null
 
-func createBoard() -> void:
-	board.resize(64)
-	print(board)
+func createBoard(a_board) -> void:
+	a_board.resize(GlobalOptions.board_width * GlobalOptions.board_height)
 	
 func vectorToBoardIndex(vector: Vector2) -> int:
 	return vector.y * GlobalOptions.board_height + vector.x
 	
 func boardIndexToVector(index: int) -> Vector2:
-	return Vector2(index % 8, (index - (index % 8)) / 8)
+	# TODO: Make it so the board width and height variables are only one variable and are in capital case
+	# TODO: Also fix the warnings
+	return Vector2(index % GlobalOptions.board_width, (index - (index % GlobalOptions.board_height)) / GlobalOptions.board_height)
 	
 func setOnBoard(position: Vector2, toSet: Square):
 	board[vectorToBoardIndex(position)] = toSet
@@ -44,7 +45,8 @@ func _ready() -> void:
 	#Square.new(self, true, Vector2(16, 16))
 	#Square.new(self, false, Vector2(48, 16))
 	#Square.new(self, (x + y) % 2, Vector2(16 + x * 32, 16 + y * 32))
-	createBoard()
+	createBoard(board)
+	createBoard(boardScenes)
 	
 	
 	for x in range(GlobalOptions.board_width):
@@ -55,6 +57,7 @@ func _ready() -> void:
 			))
 			
 			setOnBoard(Vector2(x, y), square)
+			boardScenes[vectorToBoardIndex(Vector2(x, y))] = square.scene
 			#await get_tree().create_timer(0.5).timeout
 			
 	global_position = Vector2(

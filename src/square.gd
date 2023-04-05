@@ -5,9 +5,9 @@ var light: bool
 var piece: Piece
 var scene: Node2D
 
-func _init(board: Node2D, light: bool, position: Vector2, piece: Piece = null):
+func _init(board: Node2D, light: bool, position: Vector2, a_piece: Piece = null):
 	self.light = light
-	self.piece = piece
+	self.piece = a_piece
 	if not self.light:
 		scene = preload("res://res/scenes/square_dark.tscn").instantiate()
 		if(piece != null):
@@ -26,5 +26,6 @@ func _init(board: Node2D, light: bool, position: Vector2, piece: Piece = null):
 	#print("Sprite created")
 
 func add_piece(piece: Piece):
+	self.piece = piece
 	var s_piece = piece.create()
 	scene.add_child(s_piece)
