@@ -13,9 +13,10 @@ var PIECE_SCENES = {
 	PIECE_ID.PAWN: load("res://res/scenes/pieces/pawn.tscn")
 }
 
-# TODO: Use this
 var PIECE_CLASSES = {
 	PIECE_ID.PAWN: Pawn
 }
 
 var selected_piece: Piece
+var move_target: Square
+var move_target_scene: Node2D
