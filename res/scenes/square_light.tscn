@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/square_light.gd" id="1_6f1bv"]
 [ext_resource type="Texture2D" uid="uid://djebhd53inilf" path="res://res/assets/brown_light.png" id="1_7bhlq"]
-[ext_resource type="Script" path="res://src/square_l_area.gd" id="2_u7bh0"]
+[ext_resource type="Script" path="res://src/square_area.gd" id="2_sysx1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mr28p"]
 size = Vector2(128, 128)
@@ -11,12 +11,21 @@ size = Vector2(128, 128)
 script = ExtResource("1_6f1bv")
 
 [node name="Area2D" type="Area2D" parent="."]
-script = ExtResource("2_u7bh0")
+script = ExtResource("2_sysx1")
 
 [node name="sprite" type="Sprite2D" parent="Area2D"]
 texture = ExtResource("1_7bhlq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_mr28p")
+
+[node name="moveable" type="ColorRect" parent="Area2D"]
+visible = false
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+color = Color(0.00784314, 0.494118, 0.0352941, 0.427451)
 
 [connection signal="input_event" from="Area2D" to="Area2D" method="_on_input_event"]

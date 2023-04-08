@@ -16,13 +16,25 @@ func _on_input_event(viewport, event, shape_idx):
 			else:
 				PieceID.selected_piece = square.piece
 				GlobalOptions.firstSelectedSquare = square
+				print(PieceID.selected_piece.get_moveable_positions())
+				for i in PieceID.selected_piece.get_moveable_positions():
+					boardScenes[i].get_child(0).get_child(2).visible = true
 		elif(GlobalOptions.select_count == 2):
 			PieceID.move_target = square
 			PieceID.move_target_scene = boardScenes[boardIndex]
+			for i in PieceID.selected_piece.get_moveable_positions():
+				boardScenes[i].get_child(0).get_child(2).visible = false
 			
-			PieceID.move_target.add_piece(PieceID.PIECE_CLASSES[PieceID.selected_piece.id].new(PieceID.selected_piece.white))
-			GlobalOptions.select_count = 0
-			GlobalOptions.firstSelectedSquare.remove_piece()
+			if(boardIndex in PieceID.selected_piece.get_moveable_positions()):
+				PieceID.move_target.add_piece(PieceID.PIECE_CLASSES[PieceID.selected_piece.id].new(PieceID.selected_piece.white))
+				GlobalOptions.select_count = 0
+				GlobalOptions.firstSelectedSquare.remove_piece()
+			else:
+				print("Not a moveable position")
+				PieceID.move_target = null
+				PieceID.move_target_scene = null
+				GlobalOptions.select_count = 0
+				return
 			#PieceID.move_target_scene = null
 		
 		print("Count: " + str(GlobalOptions.select_count))
